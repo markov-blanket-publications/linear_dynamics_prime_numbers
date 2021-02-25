@@ -248,7 +248,13 @@ due to the Prime Number Theorem.
 
 From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim \ln \big(\frac{n}{\ln n}\big)$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps. 
 
-As an immediate consequence, while a single counter-example may be used to prove that the Riemann Hypothesis is false, we can’t prove that the Riemann Hypothesis is true.
+As a corollary, it is only possible for mathematicians to define:
+
+\begin{equation}
+\zeta^n(s) = \prod_{i=1}^n \frac{1}{1-p_i^{-s}}
+\end{equation}
+
+where $\zeta^n(s) \neq \zeta(s)$ and $n$ is bounded due to resource-constraints. This means that while a single counter-example may be used to prove that the Riemann Hypothesis is false, we can’t prove that the Riemann Hypothesis is true.
 
 \section*{References}
 
