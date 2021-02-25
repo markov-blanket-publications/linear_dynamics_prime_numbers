@@ -139,7 +139,7 @@ as every element in $C$ has a unique factorisation in terms of $U$.
 In principle, any physical system may be modelled as a discrete dynamical system:
 
 \begin{equation}
-\forall k \in \mathbb{Z}, x_{k+1} = T \circ x_k
+\forall k \in \mathbb{Z}, x_{k+1} = \Psi \circ x_k
 \end{equation}
 
 where, without loss of generality, $x_k \in S \subset \mathbb{R}^n$, $k$ is a discrete time index and $T:S \rightarrow S$ is a dynamic map. This representation is epistemologically sound as data collected from dynamical systems always comes in discrete-time samples.
@@ -149,19 +149,19 @@ Within this context, we may represent data as evaluations of functions of the st
 Now, the Koopman operator $\Psi$ is a linear transform on this vector space given by:
 
 \begin{equation}
-\Psi g(x) = g \circ T(x)
+\Psi g(x) = g \circ \Psi(x)
 \end{equation}
 
 which in a discrete setting implies:
 
 \begin{equation}
-\Psi g(x_k) = g \circ T(x_k) = g(x_{k+1})
+\Psi g(x_k) = g \circ \Psi(x_k) = g(x_{k+1})
 \end{equation}
 
 where the linearity of the Koopman operator follows from the linearity of the composition operator:
 
 \begin{equation}
-\Psi \circ (g_1 + g_2)(x) = g_1 \circ T(x) + g_2 \circ T(x)
+\Psi \circ (g_1 + g_2)(x) = g_1 \circ \Psi(x) + g_2 \circ \Psi(x)
 \end{equation}
 
 So we may think of the Koopman operator as lifting dynamics of the state space to the space of observables.
@@ -246,7 +246,9 @@ due to the Prime Number Theorem.
 
 \section{Analysis}
 
-From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $\n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim \ln \big(\frac{n}{\ln n}\big)$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps.
+From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $\n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim \ln \big(\frac{n}{\ln n}\big)$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps. 
+
+As an immediate consequence, while a single counter-example may be used to prove that the Riemann Hypothesis is false, we can’t prove that the Riemann Hypothesis is true.
 
 \section*{References}
 
