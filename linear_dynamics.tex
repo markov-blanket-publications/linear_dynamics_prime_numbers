@@ -1,0 +1,269 @@
+\documentclass{article}
+
+% ready for submission
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsmath}}
+
+\title{A linear dynamical system identified with optimal prime sieving}
+
+\date{February 25, 2021}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Aidan Rocke\\
+  \texttt{aidanrocke@gmail.com} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+There exists a linear dynamical system that may be identified with an optimal prime-sieve. This
+dynamical system is interesting because its phase-space dimension is unbounded. From this we may deduce that the
+Kolmogorov Complexity of the Koopman operator is unbounded. This means that the shortest program in any language
+that could give the nth prime does not have finite length. More importantly, given that verifying the correctness of such a program would scale with program length, even if such a program existed we would not be able to verify its correctness in a finite number of steps.
+	
+\end{abstract}
+
+\section{An optimal prime-sieve}
+
+The goal of an optimal prime sieve is to find all prime numbers less than or equal to $N \in \mathbb{N}$.
+A relatively simple solution for finding the first $n$ prime numbers $\mathbb{P}^n = \{p_i\}_{i=1}^n$
+is given by the following program.
+
+First, define the function $f$ that takes as inputs $N \in \mathbb{N}$ and $\mathbb{P}^n = \{p_i\}_{i=1}^n$
+and computes:
+
+\begin{equation}
+f(N, \mathbb{P}^n) = \prod_{i=1}^n (N \mod p_i)
+\end{equation}
+
+If $f(N, \mathbb{P}^n) = 0$,
+
+\begin{equation}
+N:=N+1
+\end{equation}
+
+Otherwise, if $f(N, \mathbb{P}^n) = 1$, we execute the updates:
+
+\begin{equation}
+p_{n+1} = N
+\end{equation}
+
+\begin{equation}
+\mathbb{P}^{n+1} := p_{n+1} \cup \mathbb{P}^n
+\end{equation}
+
+\begin{equation}
+N := N+1
+\end{equation}
+
+and we halt this process when the cardinality of $\mathbb{P}^n$ is as desired.
+
+\newpage
+
+\section{The Buckingham-Pi theorem}
+
+The Buckingham-Pi theorem states that if a dynamical system involves $n$ physical variables and $n$ also happens
+to be the number of physical dimensions involved then you need a system of scientific units whose cardinality is
+greater than or equal to $n$.
+
+If you have a system of fundamental units $U = \{u_i\}_{i=1}^n$ and all the other physical units $C$ are derived
+from $U$:
+
+\begin{equation}
+\forall c \in C, \exists \alpha_i \in \mathbb{Z}, c = \prod_{i=1}^n = u_i^{\alpha_i}
+\end{equation}
+
+Furthermore, if we define the n-dimensional vector space:
+
+\begin{equation}
+\text{span}(\log U) = \big\{ \sum_{i=1}^n \alpha_i \log u_i \lvert u_i \in U, \alpha_i \in \mathbb{Z} \big\}
+\end{equation}
+
+the $u_i$ are fundamental if they are dimensionally independent in the sense that $\forall u_i, u_{j \neq i} \in U$,
+$\log u_i \perp \log u_{j \neq i}$:
+
+\begin{equation}
+\exists \alpha_i \in \mathbb{Z}, \sum_{i=1}^n \alpha_i \log u_i \iff \alpha_i = 1 \land \alpha_{j \neq i} = 0
+\end{equation}
+
+Moreover, it can be shown that:
+
+\begin{equation}
+\log C = \text{span}(\log U)
+\end{equation}
+
+as every element in $C$ has a unique factorisation in terms of $U$.
+
+\section{The Koopman operator}
+
+In principle, any physical system may be modelled as a discrete dynamical system:
+
+\begin{equation}
+\forall k \in \mathbb{Z}, x_{k+1} = T \circ x_k
+\end{equation}
+
+where, without loss of generality, $x_k \in S \subset \mathbb{R}^n$, $k$ is a discrete time index and $T:S \rightarrow S$ is a dynamic map. This representation is epistemologically sound as data collected from dynamical systems always comes in discrete-time samples.
+
+Within this context, we may represent data as evaluations of functions of the state $x_k$, known as observables. In fact, if $g: S \rightarrow \mathbb{R}$ is an observable associated with the system then the collection of all such observables forms a vector space due to the Buckingham-Pi theorem.
+
+Now, the Koopman operator $\Psi$ is a linear transform on this vector space given by:
+
+\begin{equation}
+\Psi g(x) = g \circ T(x)
+\end{equation}
+
+which in a discrete setting implies:
+
+\begin{equation}
+\Psi g(x_k) = g \circ T(x_k) = g(x_{k+1})
+\end{equation}
+
+where the linearity of the Koopman operator follows from the linearity of the composition operator:
+
+\begin{equation}
+\Psi \circ (g_1 + g_2)(x) = g_1 \circ T(x) + g_2 \circ T(x)
+\end{equation}
+
+So we may think of the Koopman operator as lifting dynamics of the state space to the space of observables.
+
+Furthermore, we may make the key observation that if $\Psi$ is of rank $n$ then $\Psi$ describes the
+evolution of a dynamical system with an n-dimensional phase-space.
+
+\newpage 
+
+\section{The prime numbers satisfy the criteria of Buckingham-Pi}
+
+It may be shown that $\mathbb{P}$ forms a fundamental system of units in the sense of Buckingham-Pi since the
+elements of $\log \mathbb{P}$ are dimensionally independent $\forall p_j, p_{i \neq j} \in \mathbb{P}, \log p_{i \neq j} \perp \log p_j$ in the sense that:
+
+\begin{equation}
+\exists \alpha_i \in \mathbb{Z}, \sum_{i=1}^\infty \alpha_i \log p_i = \log p_j \iff \alpha_j = 1 \land \alpha_{i \neq j} = 0
+\end{equation}
+
+Furthermore, if we define the infinite-dimensional vector space:
+
+\begin{equation}
+\text{span}(\log \mathbb{P}) = \Big\{\sum_{i=1}^\infty \alpha_i \log p_i < \infty \lvert p_i \in \mathbb{P}, \alpha_i \in \mathbb{Z}\Big\}
+\end{equation}
+
+and if we define the first $n$ primes, $\mathbb{P}^n = \{p_i\}_{i=1}^n$ then by definition:
+
+\begin{equation}
+\text{span}(\log \mathbb{P}^n) \subset \text{span}(\log \mathbb{P})
+\end{equation}
+
+Moreover, due to the unique factorisation of the integers, it may be shown that:
+
+\begin{equation}
+\text{span}(\log \mathbb{Q}_+) = \text{span}(\log \mathbb{P})
+\end{equation}
+
+\section{A linear dynamical system associated with optimal prime sieving}
+
+Given the optimal prime-sieve that was introduced earlier, we may identify the first $n$ prime numbers $\mathbb{P}^n$
+with the n-dimensional vector space:
+
+\begin{equation}
+\text{span}(\log \mathbb{P}^n) = \Big\{\sum_{i=1}^n \alpha_i \log p_i \cdot \vec{e_i}  \lvert p_i \in \mathbb{P}, \alpha_i \in \mathbb{N}\Big\}
+\end{equation}
+
+where $\vec{e_i}$ is the usual n-dimensional unit vector with components $\delta_{ij}$.
+
+Now, given that the dynamics on the integers(our states) may be described by the linear model:
+
+\begin{equation}
+\forall n \in \mathbb{N}, f \circ n = n+1
+\end{equation}
+
+we may construct a bijective mapping $G$ which lifts dynamics from the state-space $\mathbb{N}$ to the space of observables $\text{span}(\log \mathbb{P}^n)$ such that:
+
+\begin{equation}
+\forall n \in \mathbb{N} \exists! X_n \in \text{span}(\log \mathbb{P}^n), X_n = G \circ n
+\end{equation}
+
+where $X = \{X_i\}_{i=1}^n, X_i = \alpha_i \cdot \log p_i$ assuming that:
+
+\begin{equation}
+\exists \alpha_i \in \mathbb{N}, \log n = \sum_{i=1}^n \alpha_i \cdot \log p_i
+\end{equation}
+
+Now, let's suppose that there exists a linear map $\Psi \in \mathbb{R}^{n \times n}$ such that:
+
+\begin{equation}
+X_{n+1} = \Psi \circ X_n
+\end{equation}
+
+Given the infinitude of primes, the phase-space associated with the evolution of $X_n$ is unbounded and by the Buckingham-Pi
+theorem the Kolmogorov Complexity $K(\cdot)$ of $\Psi$ at the nth iteration will scale with:
+
+\begin{equation}
+K(\Psi) \sim \ln(\pi(n)) \sim \ln \big(\frac{n}{\ln n}\big)
+\end{equation}
+
+due to the Prime Number Theorem.
+
+\newpage
+
+\section{Analysis}
+
+From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $\n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim \ln \big(\frac{n}{\ln n}\big)$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps.
+
+\section*{References}
+
+\small
+
+[1] Bernard Koopman. Hamiltonian systems and Transformations in Hilbert Space.
+
+[2] Steven L. Brunton. Notes on Koopman operator theory. 2019.
+
+[3] Peter D. Grünwald. The Minimum Description Length Principle
+. MIT Press. 2007.
+
+[4] M. Li and P. Vitányi. An Introduction to Kolmogorov Complexity and Its Applications. Graduate Texts in Computer Science. Springer. 1997.
+
+[5] Fine & Rosenberger. Number Theory: An Introduction Via the Distribution of Primes. 2007.
+[6] Don Zagier. Newman’s short proof of the Prime Number Theorem. The American Mathematical Monthly, Vol. 104, No. 8 (Oct., 1997), pp. 705-708
+
+\end{document}
+
+\end{document}
