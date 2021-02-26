@@ -233,8 +233,7 @@ Now, let's suppose that there exists a linear map $\Psi \in \mathbb{R}^{n \times
 X_{n+1} = \Psi \circ X_n
 \end{equation}
 
-Given the infinitude of primes, the phase-space associated with the evolution of $X_n$ is unbounded and by the Buckingham-Pi
-theorem the Kolmogorov Complexity $K(\cdot)$ of $\Psi$ at the nth iteration will scale with:
+Given the infinitude of primes, the phase-space associated with the evolution of $X_n$ is unbounded. Furthermore, the Kolmogorov Complexity $K(\cdot)$ of $\Psi$ at the nth iteration will scale with:
 
 \begin{equation}
 K(\Psi) \sim \ln(\pi(n)) \sim \ln \big(\frac{n}{\ln n}\big)
@@ -271,6 +270,132 @@ where $\zeta^n(s) \neq \zeta(s)$ and $n$ is bounded due to resource-constraints.
 
 [5] Fine & Rosenberger. Number Theory: An Introduction Via the Distribution of Primes. 2007.
 [6] Don Zagier. Newman’s short proof of the Prime Number Theorem. The American Mathematical Monthly, Vol. 104, No. 8 (Oct., 1997), pp. 705-708
+
+\newpage
+
+\section{Appendix}
+
+\subsection{An information-theoretic derivation of the prime number theorem}
+
+If we know nothing about the primes in the worst case we may assume that each prime number less than or equal to $N$ is drawn uniformly from $[1,N]$. So our source of primes is:
+
+\begin{equation}
+X \sim U([1,N]) \tag{1}
+\end{equation}
+
+where $H(X) = \ln(N)$ is the Shannon entropy of the uniform distribution.  
+
+Now, given a strictly increasing integer sequence of length $N$, $U_N = \{u_i\}_{i=1}^N,$ where $u_i = i$ we may define the *prime encoding* of $U_N$ as the binary sequence $X_N = \{x_i\}_{i=1}^N$ where $x_i =1$ if $u_i$ is prime and
+$x_i=0$ otherwise. With no prior knowledge, given that each integer is either prime or not prime,
+we have $2^N$ possible prime encodings(i.e. arrangements of the primes) in $[1,N] \subset \mathbb{N}$.
+
+If there are $\pi(N)$ primes less than or equal to $N$ then the average number of bits per arrangement gives us the average amount of information gained from correctly identifying each prime number in $U_N$ as:
+
+\begin{equation}
+S_c = \frac{\log_2 (2^N)}{\pi(N)}= \frac{N}{\pi(N)} \tag{2}
+\end{equation}
+
+Furthermore, if we assume a maximum entropy distribution over the primes then we would expect that each prime is drawn from a uniform distribution as in (1) so we would have:
+
+\begin{equation}
+S_c = \frac{N}{\pi(N)} \sim \ln(N) \tag{3}
+\end{equation}
+
+As for why the natural logarithm appears in (3), we may first note that the base of the logarithm in the Shannon Entropy may be freely chosen without changing its properties. Moreover, given the assumptions if we define $(k,k+1] \subset [1,N]$ the average distance between consecutive primes is given by the sum of weighted distances $l$: 
+
+\begin{equation}
+\sum_{k=1}^{N-1} \frac{1}{k} \lvert (k,k+1] \rvert = \sum_{k=1}^{N-1} \frac{1}{k} \approx \sum_{l=1}^\lambda l \cdot P_l \approx \ln(N) \tag{4}
+\end{equation}
+
+where $P_l = \frac{1}{l} \cdot \sum_{k= \frac{l \cdot (l-1)}{2}}^{\frac{l\cdot (l-1)}{2}+l-1} \frac{1}{k+1}$ and  $\lambda = \frac{\sqrt{1+8(N+1)}-1}{2}$. 
+
+This is consistent with the maximum entropy assumption in (1) as there are $k$ distinct ways to sample uniformly from $[1,k]$ and a frequency of $\frac{1}{k}$ associated with the event that a prime lies in $(k-1,k]$. The computation (4) is also consistent with Boltzmann's notion of entropy as a measure of possible arrangements. 
+
+Now, we note that given (3), and (4) we have: 
+
+\begin{equation}
+\pi(N) \sim \frac{N}{\ln(N)} \tag{5}
+\end{equation}
+
+which happens to be equivalent to the prime number theorem.
+
+By the Shannon source coding theorem, we may also infer that $\pi(N)$ primes can't be compressed into fewer than $\pi(N) \cdot \ln(N)$ bits so this result tells us something about the incompressibility of the primes. Why might they be incompressible? By definition, all integers have non-trivial prime factorisations except for the prime numbers. 
+
+In fact, there is a strong connection between maximum entropy distributions and incompressible signals. This connection may be clarified by the following insight: 
+
+\begin{equation}
+\mathbb{E}[K(X_N)] \sim \pi(N) \cdot \ln(N) \sim N \tag{6}
+\end{equation}
+
+where the implicit assumption here is that for any recursive probability distribution, the expected value of the Kolmogorov Complexity equals the Shannon entropy. The distribution of the prime numbers is such a distribution as it
+is computable.
+
+\newpage 
+
+\subsection{Buckingham-Pi}
+
+If we know the appropriate physical physical units for the observable $\Omega$ then we have made significant
+progress in understanding its behaviour. The Buckingham-Pi theorem tells us how many physical units we need
+and what we can do with free parameters if we happen to have more physical measurements than what is necessary
+to model the behaviour of $\Omega$.
+
+Now, let's suppose we have succeeded in identifying an equation that describes the evolution of $\Omega$ as a function
+of $N$ physical units. Then we have:
+
+\begin{equation}
+\exists \alpha_i \in \mathbb{Z}, \Omega = \prod_{i=1}^N \omega_i^{\alpha_i} \tag{1}
+\end{equation}
+
+where $\omega_i$ are our physical units(ex. Joules).
+
+Now, we also know that each unit of $\Omega$ may be expressed in terms of the fundamental units $U = \{u_i\}_{i=1}^k$
+so we have:
+
+\begin{equation}
+\exists \beta_i \in \mathbb{Z}, \Omega = \prod_{i=1}^k u_i^{\beta_i} \tag{2}
+\end{equation}
+
+and for each physical unit,
+
+\begin{equation}
+\exists \lambda_{i,j} \in \mathbb{Z}, \omega_j^{\alpha_j} = \prod_{i=1}^k u_i^{\lambda_{i,j} \cdot \alpha_j} \tag{3}
+\end{equation}
+
+This allows a representation in terms of the system of equations:
+
+\begin{equation}
+\sum_{j=1}^N \lambda_{i,j} \cdot \alpha_j = \beta_i \tag{4} 
+\end{equation}
+
+so we have
+
+\begin{equation}
+\Lambda \cdot \vec{\alpha} = \vec{\beta} \tag{5}
+\end{equation}
+
+Now, in order to translate between different civilisations which might have different metrology institutes, it makes
+sense to model the problem using dimensionless parameters. This amounts to finding $\vec{\Delta \alpha}$ such that:
+
+\begin{equation}
+\Lambda \cdot (\vec{\alpha} + \vec{\Delta \alpha}) = \Lambda \cdot \vec{\alpha} = \vec{\beta} \tag{6}
+\end{equation}
+
+where the set of all possible $\vec{\Delta \alpha}$ defines the null-space of $\Lambda$.
+
+From the rank-nullity theorem we may deduce that:
+
+\begin{equation}
+\text{dim}(\text{Null}(\Lambda)) = N-k \tag{7}
+\end{equation}
+
+is the number of dimensionless parameters with which we may describe our physical system.
+
+A useful interpretation of the null-space is that it measure the number of physical units that
+are not dimensionally independent. This number is exactly $-k$ and we may use these free
+parameters to model the physical problem in a dimensionless manner.  
+
+In other words, an over-parametrised problem is better than one that is under-parametrised.
+
 
 \end{document}
 
