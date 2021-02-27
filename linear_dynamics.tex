@@ -11,6 +11,7 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+\usepackage{amssymb}
 \usepackage{amsmath}}
 
 \title{Unbounded Koopman operators and the distribution of prime numbers}
@@ -230,22 +231,22 @@ where $X = \{X_i\}_{i=1}^n, X_i = \alpha_i \cdot \log p_i$ assuming that:
 Now, let's suppose that there exists a linear map $\Psi \in \mathbb{R}^{n \times n}$ such that:
 
 \begin{equation}
-X_{n+1} = \Psi \circ X_n
+X_{n+1} = \Psi_n \circ X_n
 \end{equation}
 
-Given the infinitude of primes, the phase-space associated with the evolution of $X_n$ is unbounded. Furthermore, the Kolmogorov Complexity $K(\cdot)$ of $\Psi$ at the nth iteration will scale with:
+Given the infinitude of primes, the phase-space associated with the evolution of $X_n$ is unbounded. Furthermore, the Expected Kolmogorov Complexity $K(\cdot)$ of $\Psi$ at the nth iteration will scale with:
 
 \begin{equation}
-K(\Psi) \sim \ln(\pi(n)) \sim \ln \big(\frac{n}{\ln n}\big)
+\mathbb{E}[K(\Psi_n)] \gtrsim \pi(n) \cdot \ln(n) \sim n
 \end{equation}
 
-due to the Prime Number Theorem.
+due to the Prime Number Theorem and the Shannon source coding theorem. (Check the Appendix.)
 
 \newpage
 
 \section{Analysis}
 
-From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim \ln \big(\frac{n}{\ln n}\big)$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps. 
+From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim n$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps. 
 
 As a corollary, it is only possible for mathematicians to define:
 
@@ -285,7 +286,7 @@ X \sim U([1,N]) \tag{1}
 
 where $H(X) = \ln(N)$ is the Shannon entropy of the uniform distribution.  
 
-Now, given a strictly increasing integer sequence of length $N$, $U_N = \{u_i\}_{i=1}^N,$ where $u_i = i$ we may define the *prime encoding* of $U_N$ as the binary sequence $X_N = \{x_i\}_{i=1}^N$ where $x_i =1$ if $u_i$ is prime and
+Now, given a strictly increasing integer sequence of length $N$, $U_N = \{u_i\}_{i=1}^N,$ where $u_i = i$ we may define the \textit{prime encoding} of $U_N$ as the binary sequence $X_N = \{x_i\}_{i=1}^N$ where $x_i =1$ if $u_i$ is prime and
 $x_i=0$ otherwise. With no prior knowledge, given that each integer is either prime or not prime,
 we have $2^N$ possible prime encodings(i.e. arrangements of the primes) in $[1,N] \subset \mathbb{N}$.
 
@@ -391,10 +392,8 @@ From the rank-nullity theorem we may deduce that:
 is the number of dimensionless parameters with which we may describe our physical system.
 
 A useful interpretation of the null-space is that it measure the number of physical units that
-are not dimensionally independent. This number is exactly $-k$ and we may use these free
-parameters to model the physical problem in a dimensionless manner.  
-
-In other words, an over-parametrised problem is better than one that is under-parametrised.
+are not dimensionally independent. This number is exactly $N-k$ and we may use these free
+parameters to model the physical problem in a dimensionless manner. In other words, an over-parametrised problem is better than one that is under-parametrised.
 
 
 \end{document}
