@@ -199,7 +199,7 @@ Moreover, due to the unique factorisation of the integers, it may be shown that:
 \text{span}(\log \mathbb{Q}_+) = \text{span}(\log \mathbb{P})
 \end{equation}
 
-\section{A linear dynamical system associated with optimal prime sieving}
+\section{A dynamical system associated with optimal prime sieving}
 
 Given the optimal prime-sieve that was introduced earlier, we may identify the first $n$ prime numbers $\mathbb{P}^n$
 with the n-dimensional vector space:
@@ -228,33 +228,23 @@ where $X = \{X_i\}_{i=1}^n, X_i = \alpha_i \cdot \log p_i$ assuming that:
 \exists \alpha_i \in \mathbb{N}, \log n = \sum_{i=1}^n \alpha_i \cdot \log p_i
 \end{equation}
 
-Now, let's suppose that there exists a linear map $\Psi \in \mathbb{R}^{n \times n}$ such that:
+Now, let's suppose that there exists a linear map $\Psi_n \in \mathbb{R}^{n \times n}$ such that:
 
 \begin{equation}
 X_{n+1} = \Psi_n \circ X_n
 \end{equation}
 
-Given the infinitude of primes, the phase-space associated with the evolution of $X_n$ is unbounded. Furthermore, the Expected Kolmogorov Complexity $K(\cdot)$ of $\Psi$ at the nth iteration will scale with:
+It may be easily shown that this system is highly sensitive to the initial conditions. Moreover, due to the Prime Number Theorem the Kolmogorov Complexity $K(\cdot)$ of $\Psi_n$ at the nth iteration will scale with:
 
 \begin{equation}
-\mathbb{E}[K(\Psi_n)] \gtrsim \pi(n) \cdot \ln(n) \sim n
+K(\Psi_n) \gtrsim \frac{n}{\ln n}
 \end{equation}
-
-due to the Prime Number Theorem and the Shannon source coding theorem. (Check the Appendix.)
 
 \newpage
 
 \section{Analysis}
 
 From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim n$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps. 
-
-As a corollary, it is only possible for mathematicians to define:
-
-\begin{equation}
-\zeta^n(s) = \prod_{i=1}^n \frac{1}{1-p_i^{-s}}
-\end{equation}
-
-where $\zeta^n(s) \neq \zeta(s)$ and $n$ is bounded due to resource-constraints. This means that while a single counter-example may be used to prove that the Riemann Hypothesis is false, we can’t prove that the Riemann Hypothesis is true.
 
 \section*{References}
 
@@ -272,66 +262,96 @@ where $\zeta^n(s) \neq \zeta(s)$ and $n$ is bounded due to resource-constraints.
 [5] Fine & Rosenberger. Number Theory: An Introduction Via the Distribution of Primes. 2007.
 [6] Don Zagier. Newman’s short proof of the Prime Number Theorem. The American Mathematical Monthly, Vol. 104, No. 8 (Oct., 1997), pp. 705-708
 
+[7] Lance Fortnow. Kolmogorov Complexity. 2000.
+
+[8] Lance Fortnow. Kolmogorov Complexity and Computational Complexity. 2003.
+
+[9] Gregory Chaitin. META MATH! The Quest for Omega. Arxiv. 2004.
+
 \newpage
 
 \section{Appendix}
 
-\subsection{An information-theoretic derivation of the prime number theorem}
+\subsection{The Compressibility method}
 
-If we know nothing about the primes in the worst case we may assume that each prime number less than or equal to $N$ is drawn uniformly from $[1,N]$. So our source of primes is:
+\subsubsection{Almost all integers are incompressible}
 
-\begin{equation}
-X \sim U([1,N]) \tag{1}
-\end{equation}
-
-where $H(X) = \ln(N)$ is the Shannon entropy of the uniform distribution.  
-
-Now, given a strictly increasing integer sequence of length $N$, $U_N = \{u_i\}_{i=1}^N,$ where $u_i = i$ we may define the \textit{prime encoding} of $U_N$ as the binary sequence $X_N = \{x_i\}_{i=1}^N$ where $x_i =1$ if $u_i$ is prime and
-$x_i=0$ otherwise. With no prior knowledge, given that each integer is either prime or not prime,
-we have $2^N$ possible prime encodings(i.e. arrangements of the primes) in $[1,N] \subset \mathbb{N}$.
-
-If there are $\pi(N)$ primes less than or equal to $N$ then the average number of bits per arrangement gives us the average amount of information gained from correctly identifying each prime number in $U_N$ as:
+Given that $\mathbb{N}$ is countable and the space of binary strings of finite length $\{0,1\}^*$
+is also countable, we may construct a bijection from $\mathbb{N}$ to $\{0,1\}^*$. It follows
+that every positive integer has a unique binary encoding. Moreover, almost all positive integers are incompressible since:
 
 \begin{equation}
-S_c = \frac{\log_2 (2^N)}{\pi(N)}= \frac{N}{\pi(N)} \tag{2}
+\forall n \in \mathbb{N}^* \forall k < n, |\\{x \in \\{0,1\\}^*:K(x) \geq n -k \\}| \geq 2^n(1-2^{-k})
 \end{equation}
 
-Furthermore, if we assume a maximum entropy distribution over the primes then we would expect that each prime is drawn from a uniform distribution as in (1) so we would have:
+where $|x| = n$, the binary length of $x$, which may be understood as the machine-code representation
+of an integer.
+
+\textbf{Proof:}
+
+Let's suppose an integer with binary encoding $x$ has an algorithmic complexity $K(x) \leq n-k$.
+Given that the number of binary strings of binary length less than $n-k$ is $2^{n-k} - 1 < 2^{n-k}$ we have:
 
 \begin{equation}
-S_c = \frac{N}{\pi(N)} \sim \ln(N) \tag{3}
+2^n - 2^{n-k} = 2^n(1-2^{-k})
 \end{equation}
 
-As for why the natural logarithm appears in (3), we may first note that the base of the logarithm in the Shannon Entropy may be freely chosen without changing its properties. Moreover, given the assumptions if we define $(k,k+1] \subset [1,N]$ the average distance between consecutive primes is given by the sum of weighted distances $l$: 
+integers with an algorithmic complexity greater than or equal to $n-k$.
+
+\textbf{Corollary:}
+
+For $n > k \geq 10$, more than 99.9\% of integers have an algorithmic complexity greater than $n-k$
+since:
 
 \begin{equation}
-\sum_{k=1}^{N-1} \frac{1}{k} \lvert (k,k+1] \rvert = \sum_{k=1}^{N-1} \frac{1}{k} \approx \sum_{l=1}^\lambda l \cdot P_l \approx \ln(N) \tag{4}
+1-\frac{1}{2^{10}} > 99.9\%
 \end{equation}
 
-where $P_l = \frac{1}{l} \cdot \sum_{k= \frac{l \cdot (l-1)}{2}}^{\frac{l\cdot (l-1)}{2}+l-1} \frac{1}{k+1}$ and  $\lambda = \frac{\sqrt{1+8(N+1)}-1}{2}$. 
+From this we may deduce that less than 1\% of integers are compressible.
 
-This is consistent with the maximum entropy assumption in (1) as there are $k$ distinct ways to sample uniformly from $[1,k]$ and a frequency of $\frac{1}{k}$ associated with the event that a prime lies in $(k-1,k]$. The computation (4) is also consistent with Boltzmann's notion of entropy as a measure of possible arrangements. 
+\subsubsection{Chaitin's proof of the infinitude of primes}
 
-Now, we note that given (3), and (4) we have: 
+Each integer $n \in \mathbb{N}$ may be described by its prime factorisation:
 
 \begin{equation}
-\pi(N) \sim \frac{N}{\ln(N)} \tag{5}
+n = \prod_{l=1}^k p_l^{\alpha_l}
 \end{equation}
 
-which happens to be equivalent to the prime number theorem.
+so $\pi(n)=k$ assuming that some exponents $\alpha_l$ equal zero.
 
-By the Shannon source coding theorem, we may also infer that $\pi(N)$ primes can't be compressed into fewer than $\pi(N) \cdot \ln(N)$ bits so this result tells us something about the incompressibility of the primes. Why might they be incompressible? By definition, all integers have non-trivial prime factorisations except for the prime numbers. 
-
-In fact, there is a strong connection between maximum entropy distributions and incompressible signals. This connection may be clarified by the following insight: 
+Given that $p_l \geq 2$,
 
 \begin{equation}
-\mathbb{E}[K(X_N)] \sim \pi(N) \cdot \ln(N) \sim N \tag{6}
+\forall l \in [1,k], \alpha_l \leq \log_2 n
 \end{equation}
 
-where the implicit assumption here is that for any recursive probability distribution, the expected value of the Kolmogorov Complexity equals the Shannon entropy. The distribution of the prime numbers is such a distribution as it
-is computable.
+and so any exponent may be described using $\log_2 \log_2 n$ bits.
 
-\newpage 
+Now, assuming that the value of $\log_2 \log_2 n$ is known the integer $n$ may be described
+using:
+
+\begin{equation}
+k \cdot \log_2 \log_2 n
+\end{equation}
+
+bits.
+
+However, given that most integers are incompressible there are integers of binary length $l = \log_2 n$ which
+can't be described in fewer than $l$ bits. So we may deduce that:
+
+\begin{equation}
+\pi(n) \cdot \log_2 \log_2 n \geq \log_2 n
+\end{equation}
+
+for almost all positive integers $n \in \mathbb{N}$.
+
+This allows us to deduce a useful lower bound on the prime counting function for almost all $n$:
+
+\begin{equation}
+\pi(n) \geq \frac{\log_2 n}{\log_2 \log_2 n}
+\end{equation}
+
+which implies that there are infinitely many prime numbers.
 
 \subsection{Buckingham-Pi}
 
@@ -394,7 +414,6 @@ is the number of dimensionless parameters with which we may describe our physica
 A useful interpretation of the null-space is that it measure the number of physical units that
 are not dimensionally independent. This number is exactly $N-k$ and we may use these free
 parameters to model the physical problem in a dimensionless manner. In other words, an over-parametrised problem is better than one that is under-parametrised.
-
 
 \end{document}
 
