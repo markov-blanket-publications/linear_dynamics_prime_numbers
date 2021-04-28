@@ -201,7 +201,7 @@ Moreover, due to the unique factorisation of the integers, it may be shown that:
 
 \section{A dynamical system associated with optimal prime sieving}
 
-Given the optimal prime-sieve that was introduced earlier, we may identify the first $n$ prime numbers $\mathbb{P}^n$
+Given the prime-sieve that was introduced earlier, we may identify $\mathbb{P}^n$
 with the n-dimensional vector space:
 
 \begin{equation}
@@ -234,17 +234,19 @@ Now, let's suppose that there exists a linear map $\Psi_n \in \mathbb{R}^{n \tim
 X_{n+1} = \Psi_n \circ X_n
 \end{equation}
 
-It may be easily shown that this system is highly sensitive to the initial conditions. Moreover, due to the Prime Number Theorem the Kolmogorov Complexity $K(\cdot)$ of $\Psi_n$ at the nth iteration will scale with:
+Due to the Prime Number Theorem, the Kolmogorov Complexity $K(\cdot)$ of $\Psi_n$ at the nth iteration will scale with:
 
 \begin{equation}
 K(\Psi_n) \gtrsim \frac{n}{\ln n}
 \end{equation}
 
+as the number of independent eigenvectors of $\Psi_n$ is greater than or equal to $\frac{n}{\ln n}$ so the number of bits required to encode $\Psi_n$ is greater than or equal to $\frac{n}{\ln n}$.
+
 \newpage
 
 \section{Analysis}
 
-From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim n$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps. 
+From this analysis we may deduce that the shortest program in any programming language that could give the nth prime for all $n \in \mathbb{N}$ would have unbounded length. Furthermore, given that verifying the correctness of this program would scale with program length, $ \sim \frac{n}{\ln n}$, we may deduce that even if such a program existed we would not be able to verify its correctness in a finite number of steps. 
 
 \section*{References}
 
@@ -281,7 +283,7 @@ is also countable, we may construct a bijection from $\mathbb{N}$ to $\{0,1\}^*$
 that every positive integer has a unique binary encoding. Moreover, almost all positive integers are incompressible since:
 
 \begin{equation}
-\forall n \in \mathbb{N}^* \forall k < n, |\\{x \in \\{0,1\\}^*:K(x) \geq n -k \\}| \geq 2^n(1-2^{-k})
+\forall n \in \mathbb{N}^* \forall k < n, |\{x \in \\{0,1\}^*:K(x) \geq n -k \}| \geq 2^n(1-2^{-k})
 \end{equation}
 
 where $|x| = n$, the binary length of $x$, which may be understood as the machine-code representation
@@ -314,15 +316,15 @@ From this we may deduce that less than 1\% of integers are compressible.
 Each integer $n \in \mathbb{N}$ may be described by its prime factorisation:
 
 \begin{equation}
-n = \prod_{l=1}^k p_l^{\alpha_l}
+n = \prod_{i=1}^k p_i^{\alpha_i}
 \end{equation}
 
-so $\pi(n)=k$ assuming that some exponents $\alpha_l$ equal zero.
+so $\pi(n)=k$ assuming that some exponents $\alpha_i$ may equal zero.
 
-Given that $p_l \geq 2$,
+Given that $p_i \geq 2$,
 
 \begin{equation}
-\forall l \in [1,k], \alpha_l \leq \log_2 n
+\forall i \in [1,k], \alpha_i \leq \log_2 n
 \end{equation}
 
 and so any exponent may be described using $\log_2 \log_2 n$ bits.
